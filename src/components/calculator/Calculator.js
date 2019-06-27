@@ -18,7 +18,7 @@ export default class extends React.Component {
      * Determining operation queue will use:
      * 
      * Brackets
-     *pOwers of
+     * Indices
      * Division
      * Multiplication
      * Addition
