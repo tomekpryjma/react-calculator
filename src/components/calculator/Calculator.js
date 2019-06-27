@@ -59,6 +59,11 @@ export default class extends React.Component {
             this.clear();
         })
     }
+
+    clear = () => {
+        this.setState({
+            statement: ''
+        }, () => console.log("Calculator statement cleared!"))
     }
 
     render() {
