@@ -31,7 +31,7 @@ export default (statement) => {
 
     // A
     // Since I'm starting with simple calculations first - I'll do addition here.
-    carryOutRegex(statement, BODMAS.add.regex, add, "+");
+    carryOutRegex(statement, BODMAS.add.regex, add);
 
     // S
 
