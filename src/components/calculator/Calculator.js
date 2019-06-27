@@ -52,10 +52,13 @@ export default class extends React.Component {
     }
 
     equals = () => {
-        equalise(this.state.statement)
-        // this.setState({
-        //     equals: equalise(this.state.statement)
-        // })
+        this.setState({
+            equals: equalise(this.state.statement)
+        }, () => {
+            console.log("The result is ===> " + this.state.equals)
+            this.clear();
+        })
+    }
     }
 
     render() {
