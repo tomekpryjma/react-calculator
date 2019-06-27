@@ -1,4 +1,5 @@
 import React from 'react';
+import Calculator from './calculator/Calculator';
 
 export default class extends React.Component {
     constructor(props) {
@@ -7,7 +8,9 @@ export default class extends React.Component {
 
     render() {
         return(
-            <p>Minimal React, Webpack &amp; Babel setup!</p>
+            <main>
+                <Calculator/>
+            </main>
         )
     }
 }
