@@ -1,8 +1,14 @@
-const regexLoop = (subject, regex, callback) => {
-    console.log("subject at beggining of regexLoop(): " + subject)
+import { BIDMAS } from "../components/calculator/operations/_config";
+import orderOfCalculations from "../components/calculator/operations/order-of-calculations";
+
+/**
+ * Helpers
+ */
+const regexLoop = (statement, regex, callback) => {
+    console.log("statement at beggining of regexLoop(): " + statement)
     let matches = [];
 
-    while ( (matches = regex.exec(subject)) !== null) {
+    while ( (matches = regex.exec(statement)) !== null) {
 
         if (matches.index === regex.lastIndex) {
             regex.lastIndex++;
@@ -13,61 +19,98 @@ const regexLoop = (subject, regex, callback) => {
             let arithmeticResult = callback(match);
     
             /**
-             * Mutate subject so that arithmeticResult replaces
+             * Mutate statement so that arithmeticResult replaces
              * the match.
              */
-            subject = subject.replace(match, arithmeticResult);
+            statement = statement.replace(match, arithmeticResult);
         });
-
     }
-    console.log("subject at end of regexLoop(): " + subject)
+    console.log("statement at end of regexLoop(): " + statement)
     console.log("")
-    return subject;
+    return statement;
 }
 
-const replaceMultipleInstancesOfSymbolWithOne = (subject, symbols) => {
+const replaceMultipleInstancesOfSymbolWithOne = (statement, symbols) => {
     for (let index = 0; index < symbols.length; index++) {
         let symbol = symbols[index];
         let pattern = "(\\"+ symbol +"{2,})";
         let regex = new RegExp(pattern, 'gm');
         let matches = [];
 
-        while ( (matches = regex.exec(subject)) !== null) {
+        while ( (matches = regex.exec(statement)) !== null) {
     
             if (matches.index === regex.lastIndex) {
                 regex.lastIndex++;
             }
 
             matches.forEach((match, groupIndex) => {
-                subject = subject.replace(match, symbol);
+                statement = statement.replace(match, symbol);
             });
         }
 
-        subject = subject.replace(regex, symbol);
+        statement = statement.replace(regex, symbol);
     }
 
-    return subject;
+    return statement;
 }
 
-const doMathematicalOperation = (subject, regex, callback) => {
-    callback = callback || false;
-    subject = regexLoop(subject, regex, callback);
+/**
+ * Operational
+ */
+const doMathematicalOperationsWithinBrackets = (statement) => {
+    let matches = [];
+    let regexBrackets = BIDMAS.brackets.regex;
+    let symbolsRegex = BIDMAS.brackets.symbolsRegex;
 
-    let subjectIsNaN = isNaN(subject.toString());
+    while ( (matches = regexBrackets.exec(statement)) !== null) {
+    
+        if (matches.index === regexBrackets.lastIndex) {
+            regexBrackets.lastIndex++;
+        }
+        
+        matches.forEach((match, groupIndex) => {
+            // setTimeout(() => {
+                console.log(match);
+                let matchNoBrackets = match.replace(symbolsRegex, '');
+                let arithmeticResult = orderOfCalculations(matchNoBrackets);
+                statement = statement.replace(match, arithmeticResult);
+            // }, 3000)
+        });
+    }
+
+    if (symbolsRegex.test(statement)) {
+        statement = doMathematicalOperationsWithinBrackets(statement);
+    }
+
+    // console.log("At end of brackets: " + statement)
+
+    return statement;
+}
+
+const doMathematicalOperation = (statement, regex, callback) => {
+    console.log(statement)
+    if (! regex.test(statement)) {
+        return statement;
+    }
+
+    statement = regexLoop(statement, regex, callback);
+
+    let statementIsNaN = isNaN(statement.toString());
 
     /**
-     * It is likely that the subject at this point will still have
+     * It is likely that the statement at this point will still have
      * mathematical operators present.
      * So I parse it through the callback once more.
      */
-    if (subjectIsNaN) {
-        subject = doMathematicalOperation(subject, regex, callback);
+    if (statementIsNaN) {
+        statement = doMathematicalOperation(statement, regex, callback);
     }
 
-    return subject;
+    return statement;
 }
 
 export {
+    doMathematicalOperationsWithinBrackets,
     replaceMultipleInstancesOfSymbolWithOne,
     doMathematicalOperation
 };

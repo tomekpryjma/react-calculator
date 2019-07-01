@@ -1,17 +1,18 @@
 import {BIDMAS, OPERATIONS} from './_config';
 import {
     replaceMultipleInstancesOfSymbolWithOne,
-    doMathematicalOperation,
+    doMathematicalOperationsWithinBrackets
 } from '../../../utils/carry-out-regex';
-
-// Operations
-import add from './add';
+import orderOfCalculations from './order-of-calculations';
 
 // Note for indices: [2*(2*3)] - this should be representation of powers (2 is the base, 3 is the exponent)
 
 export default (statement) => {
     statement = statement.replace("=", "");
     statement = replaceMultipleInstancesOfSymbolWithOne(statement, OPERATIONS);
+    let result;
+
+    // statement = "(3+2)+2+(3+(2+2))"
 
     // let result = statement;
 
@@ -27,6 +28,16 @@ export default (statement) => {
      */
 
     // B
+    console.time()
+    result = doMathematicalOperationsWithinBrackets(statement);
+    console.log("result: " + result)
+    result = orderOfCalculations(result);
+    console.timeEnd();
+    // if (BIDMAS.brackets.symbolsRegex.test(statement)) {
+    // }
+    // else {
+    // }
+
 
     // I
 
@@ -36,9 +47,8 @@ export default (statement) => {
 
     // A
     // Since I'm starting with simple calculations first - I'll do addition here.
-    statement = doMathematicalOperation(statement, BIDMAS.add.regex, add);
 
     // S
 
-    return statement;
+    return result;
 }

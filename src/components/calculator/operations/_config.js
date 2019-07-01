@@ -10,14 +10,18 @@
  * operation symbols have been entered. Otherwise there is an infinite loop
  * in carry-out-regex.js.
  */
-const OPERATIONS = ["x", "/", "+", "-"];
+const OPERATIONS = ["*", "/", "+", "-"];
 
 const BIDMAS = {
     brackets: {
-        regex: /(\(\d*[\+\-\*\/]\d\))/gm
+        regex: /(\([\d\+\-\*\/]*\))/gm,
+        symbolsRegex: /[\(\)]/gm
     },
     add: {
-        regex: /(\d{1,}\+{1}\d{1,})/gm
+        regex: /(\d+\+\d+)/gm
+    },
+    subtract: {
+        regex: /(\d+\-\d+)/gm
     }
 }
 
