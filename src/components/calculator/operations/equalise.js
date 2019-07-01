@@ -1,4 +1,8 @@
+import {BIDMAS, OPERATIONS} from './_config';
+import {
+    replaceMultipleInstancesOfSymbolWithOne,
     doMathematicalOperation,
+} from '../../../utils/carry-out-regex';
 
 // Operations
 import add from './add';
@@ -7,6 +11,8 @@ import add from './add';
 
 export default (statement) => {
     statement = statement.replace("=", "");
+    statement = replaceMultipleInstancesOfSymbolWithOne(statement, OPERATIONS);
+
     // let result = statement;
 
     /**
