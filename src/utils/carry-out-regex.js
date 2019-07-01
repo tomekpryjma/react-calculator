@@ -1,4 +1,5 @@
 const regexLoop = (subject, regex, callback) => {
+    console.log("subject at beggining of regexLoop(): " + subject)
     let matches = [];
 
     while ( (matches = regex.exec(subject)) !== null) {
@@ -6,17 +7,23 @@ const regexLoop = (subject, regex, callback) => {
         if (matches.index === regex.lastIndex) {
             regex.lastIndex++;
         }
-        else {
-            regex.lastIndex--;
-        }
 
-        let arithmeticResult = callback(matches[0]);
+        matches.forEach((match, groupIndex) => {
 
+            let arithmeticResult = callback(match);
+    
         /**
          * Mutate subject so that arithmeticResult replaces
          * the match.
          */
-        subject = subject.replace(matches[0], arithmeticResult);
+            subject = subject.replace(match, arithmeticResult);
+        });
+
+    }
+    console.log("subject at end of regexLoop(): " + subject)
+    console.log("")
+    return subject;
+}
     }
     return subject;
 }
