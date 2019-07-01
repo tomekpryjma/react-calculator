@@ -1,5 +1,4 @@
-import BIDMAS from './_config';
-import carryOutRegex from '../../../utils/carry-out-regex';
+    doMathematicalOperation,
 
 // Operations
 import add from './add';
@@ -31,7 +30,7 @@ export default (statement) => {
 
     // A
     // Since I'm starting with simple calculations first - I'll do addition here.
-    statement = carryOutRegex(statement, BIDMAS.add.regex, add);
+    statement = doMathematicalOperation(statement, BIDMAS.add.regex, add);
 
     // S
 

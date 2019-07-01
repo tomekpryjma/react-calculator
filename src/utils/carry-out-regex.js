@@ -21,7 +21,7 @@ const regexLoop = (subject, regex, callback) => {
     return subject;
 }
 
-const carryOutRegex = (subject, regex, callback) => {
+const doMathematicalOperation = (subject, regex, callback) => {
     callback = callback || false;
     subject = regexLoop(subject, regex, callback);
 
@@ -33,10 +33,10 @@ const carryOutRegex = (subject, regex, callback) => {
      * So I parse it through the callback once more.
      */
     if (subjectIsNaN) {
-        subject = carryOutRegex(subject, regex, callback);
+        subject = doMathematicalOperation(subject, regex, callback);
     }
 
     return subject;
 }
 
-export default carryOutRegex;
+    doMathematicalOperation
