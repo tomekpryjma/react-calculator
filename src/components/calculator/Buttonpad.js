@@ -6,6 +6,7 @@ import {
 } from 'reactstrap'
 
 import Button from './Button';
+import {OPERATIONS} from '../calculator/operations/_config';
 
 export default class extends React.Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class extends React.Component {
         this.state = {
             symbols: {
                 numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
-                operations: ["x", "/", "+", "-"],
+                operations: OPERATIONS,
                 special: ["=", "ce"]
             }
         }
